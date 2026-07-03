@@ -3,10 +3,10 @@
 #include <fstream>
 #include <filesystem>
 #include <expected>
-#include <cstddef>
+#include <type_traits>
 
 namespace srl
-{
+{   
     enum class IoError
     {
         None,
@@ -16,6 +16,9 @@ namespace srl
     };
 
     template<typename T>
+    concept TrivialType = std::is_trivially_copyable_v<T> && std::is_trivially_constructible_v<T>;
+    
+    template<TrivialType T>
     auto LoadFromBinary(const std::filesystem::path& filePath) -> std::expected<T, IoError>
     {
         auto file = std::ifstream(filePath, std::ios::binary);

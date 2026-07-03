@@ -3,10 +3,10 @@
 #include <fstream>
 #include <filesystem>
 #include <expected>
-#include <type_traits>
+#include <type_traits>  
 
 namespace srl
-{   
+{
     enum class IoError
     {
         None,
@@ -37,4 +37,24 @@ namespace srl
 
         return loadDestination;
     }
+
+    template<TrivialType T>
+    auto SaveAsBinary(const T& object, const std::filesystem::path& filePath) -> IoError
+    {
+        std::ofstream file(filePath, std::ios::binary);
+
+        if (!file) {
+            return IoError::OpenError; 
+        }
+
+        file.write(reinterpret_cast<const char*>(&object), sizeof(object));
+
+        if (!file) {
+            return IoError::WriteError;
+        }
+
+        return IoError::None;
+    }
+
 }
+

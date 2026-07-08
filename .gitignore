@@ -38,10 +38,6 @@
 *.out
 *.app
 
-# Build directories
-build/bin/*
-build/obj/*
-
 # CMake generated files
 CMakeFiles/
 CMakeCache.txt
@@ -68,3 +64,4 @@ Testing/
 
 # vscode
 *.vscode
+/.vs

@@ -1,11 +1,8 @@
-#pragma once
+export module serialize;
 
-#include <fstream>
-#include <filesystem>
-#include <expected>
-#include <type_traits>  
+import std;
 
-namespace srl
+export namespace srl
 {
     enum class IoError
     {
@@ -55,6 +52,4 @@ namespace srl
 
         return IoError::None;
     }
-
 }
-

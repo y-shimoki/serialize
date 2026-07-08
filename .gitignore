@@ -53,8 +53,7 @@ compile_commands.json
 *.swp
 
 # Build directories
-/build/bin/*
-/build/obj/*
+/build/*
 
 # vcpkg
 vcpkg_installed/

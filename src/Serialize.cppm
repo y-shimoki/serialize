@@ -39,7 +39,7 @@ export namespace srl
     requires std::same_as<T, std::string>
     auto LoadFromBinary(const std::filesystem::path& filePath) -> std::expected<std::string, IoError>
     {
-        auto file = std::ifstream(filePath, std::ios:binary);
+        auto file = std::ifstream(filePath, std::ios::binary);
         if (!file.is_open())
         {
             return std::unexpected{ IoError::OpenError };
@@ -48,7 +48,7 @@ export namespace srl
         size_t stringSize = 0;
         file.read(reinterpret_cast<char*>(&stringSize), sizeof(stringSize));
 
-        auto loadDestination = std::string(stringSize, '\0')
+        auto loadDestination = std::string(stringSize, '\0');
         file.read(loadDestination.data(), stringSize);
 
         if (!file.fail() || file.gcount() != static_cast<std::streamsize>(stringSize))

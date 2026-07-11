@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <concepts>
 #include <expected>
@@ -7,7 +7,7 @@
 #include <string>
 #include <type_traits>
 
-export namespace srl
+namespace srl
 {
     enum class IoError
     {

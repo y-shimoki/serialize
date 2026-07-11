@@ -11,5 +11,5 @@ target_sources(serialize
 	PUBLIC
 		FILE_SET CXX_MODULES
 		FILES
-			src/Serialize.cppm
+			"src/Serialize.cpp"
 )

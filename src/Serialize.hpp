@@ -1,6 +1,11 @@
-export module serialize;
+﻿#pragma once
 
-import std;
+#include <concepts>
+#include <expected>
+#include <filesystem>
+#include <fstream>
+#include <string>
+#include <type_traits>
 
 export namespace srl
 {

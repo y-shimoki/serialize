@@ -4,20 +4,29 @@
 #include <filesystem>
 #include <concepts>
 #include <expected>
+#include <iostream>
 #include <cstdint>
 #include <fstream>
+#include <iomanip>
 #include <string>
-#include <vector>
+#include <vector> 
+#include <bitset>
 
 namespace srl
 {
+	//Concepts
 	template<typename T>
 	concept TrivialType = std::is_trivially_copyable_v<T> && std::is_trivially_constructible_v<T> && !std::is_pointer_v<T>;
+
+	//Enums
+	enum class PrintFormat { Decimal, Hex, Binary };
+
+	//enum class IoError { None, OpenError, WriteError, ReadError };
 
 	class BinarySerialization
 	{
 	private:
-		std::vector<std::byte> buffer;
+		std::vector<std::byte> buffer;    
 
 	public:
 		BinarySerialization()
@@ -53,6 +62,27 @@ namespace srl
 			return buffer;
 		}	
 
+		auto Print(PrintFormat format = PrintFormat::Hex) const -> void
+		{
+			for (const auto& b : buffer)
+			{
+				int val = std::to_integer<int>(b);
+
+				switch (format)
+				{
+				case PrintFormat::Decimal:
+					std::cout << val << " ";
+					break;
+				case PrintFormat::Hex:
+					std::cout << std::hex << std::setw(2) << std::setfill('0') << val << " ";
+					std::cout << std::dec;
+					break;
+				case PrintFormat::Binary:
+					std::cout << std::bitset<8>(val) << " ";
+					break;
+				}
+			}			
+		}
 
 		//Write to File Functions
 	};

@@ -33,6 +33,19 @@ namespace srl
 			return *this;
 		}
 
+		auto Convert(const std::string& string) -> BinarySerialization&
+		{
+			std::uint32_t stringSize = static_cast<std::uint32_t>(string.size());
+
+			const auto* sizeBytePtr = reinterpret_cast<const std::byte*>(&stringSize);
+			buffer.insert(buffer.end(), sizeBytePtr, sizeBytePtr + sizeof(stringSize));
+
+			const auto* dataBytePtr = reinterpret_cast<const std::byte*>(string.data());
+			buffer.insert(buffer.end(), dataBytePtr, dataBytePtr + stringSize);
+
+			return *this;
+		}
+
 		//Funções para converter outros tipos
 
 

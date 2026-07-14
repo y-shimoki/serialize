@@ -1,12 +1,12 @@
 #pragma once
 
+#include <type_traits>
+#include <filesystem>
 #include <concepts>
 #include <expected>
-#include <filesystem>
+#include <cstdint>
 #include <fstream>
 #include <string>
-#include <type_traits>
-#include <cstdint>
 #include <vector>
 
 namespace srl
@@ -16,7 +16,7 @@ namespace srl
 
 	class BinarySerialization
 	{
-	public:
+	private:
 		std::vector<std::byte> buffer;
 
 	public:
@@ -25,6 +25,7 @@ namespace srl
 			//Usar construtor pra inicializar buffer cm metadados como endiannes e versao
 		}
 
+		// Convert Functions
 		template<TrivialType T>
 		auto Convert(const T& obj) -> BinarySerialization&
 		{
@@ -46,11 +47,14 @@ namespace srl
 			return *this;
 		}
 
-		//Funções para converter outros tipos
+		//Auxiliary Functions
+		auto GetBuffer() const -> const std::vector<std::byte>&
+		{
+			return buffer;
+		}	
 
 
-		//Funções para escrever em um arquivos e etc...
-
+		//Write to File Functions
 	};
 }
 

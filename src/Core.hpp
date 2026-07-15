@@ -11,6 +11,7 @@
 #include <string>
 #include <vector> 
 #include <bitset>
+#include <array>
 
 namespace srl
 {
@@ -21,7 +22,7 @@ namespace srl
 	//Enums
 	enum class PrintFormat { Decimal, Hex, Binary };
 
-	//Class
+	//Classes
 	class BinarySerialization
 	{
 	private:
@@ -29,19 +30,17 @@ namespace srl
 	
 	public:
 		static constexpr std::uint8_t CURRENT_VERSION = 1;
+		static constexpr std::array<std::byte, 4> header = {
+				static_cast<std::byte>('S'),
+				static_cast<std::byte>('R'),
+				static_cast<std::byte>('L'),
+				static_cast<std::byte>(CURRENT_VERSION)
+		};
 
 	public:
 		BinarySerialization(std::uint16_t initial_capacity = 256)
 		{
 			Reserve(initial_capacity);
-
-			std::byte header[] = {
-				static_cast<std::byte>('S'),
-				static_cast<std::byte>('R'),
-				static_cast<std::byte>('L'),
-				static_cast<std::byte>(CURRENT_VERSION)
-			};
-			
 			buffer.insert(buffer.end(), std::begin(header), std::end(header));
 		}
 
@@ -74,6 +73,12 @@ namespace srl
 		{
 			return buffer;
 		}	
+
+		auto Clear() -> void
+		{
+			buffer.clear();
+			buffer.insert(buffer.end(), std::begin(header), std::end(header));
+		}
 
 		auto Reserve(std::size_t sizeBytes) -> void
 		{

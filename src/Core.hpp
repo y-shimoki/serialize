@@ -21,31 +21,39 @@ namespace srl
 	//Enums
 	enum class PrintFormat { Decimal, Hex, Binary };
 
-	//enum class IoError { None, OpenError, WriteError, ReadError };
-
+	//Class
 	class BinarySerialization
 	{
 	private:
 		std::vector<std::byte> buffer;    
+	
+	public:
+		static constexpr std::uint8_t CURRENT_VERSION = 1;
 
 	public:
 		BinarySerialization()
 		{
-			//Usar construtor pra inicializar buffer cm metadados como endiannes e versao
+			// Magic Number (""""Number"""")
+			buffer.push_back(static_cast<std::byte>('S'));
+			buffer.push_back(static_cast<std::byte>('R'));
+			buffer.push_back(static_cast<std::byte>('L'));
+
+			// Versão do arquivo
+			buffer.push_back(static_cast<std::byte>(CURRENT_VERSION));
 		}
 
-		// Convert Functions
+		// Serialize Functions
 		template<TrivialType T>
-		auto Convert(const T& obj) -> BinarySerialization&
+		auto Serialize(const T& obj) -> BinarySerialization&
 		{
 			const auto* bytePtr = reinterpret_cast<const std::byte*>(&obj);
 			buffer.insert(buffer.end(), bytePtr, bytePtr + sizeof(T));
 			return *this;
 		}
 
-		auto Convert(const std::string& string) -> BinarySerialization&
+		auto Serialize(const std::string& string) -> BinarySerialization&
 		{
-			std::uint32_t stringSize = static_cast<std::uint32_t>(string.size());
+			auto stringSize = static_cast<std::uint16_t>(string.size());
 
 			const auto* sizeBytePtr = reinterpret_cast<const std::byte*>(&stringSize);
 			buffer.insert(buffer.end(), sizeBytePtr, sizeBytePtr + sizeof(stringSize));

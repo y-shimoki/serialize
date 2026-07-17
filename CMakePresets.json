@@ -15,7 +15,11 @@
       "name": "vs2026",
       "inherits": "base-settings",
       "displayName": "Visual Studio 18 2026",
-      "generator": "Visual Studio 18 2026"
+      "generator": "Visual Studio 18 2026",
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      }
     },
     {
       "name": "ninja",

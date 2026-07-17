@@ -1,6 +1,9 @@
 #pragma once
 
+#include <array>
+#include <cstddef>
 #include <cstdlib>
+#include <type_traits>
 
 namespace srl
 {
@@ -14,24 +17,18 @@ namespace srl
 		std::array<std::byte, sizeof(T)> mContent;
 
 	private:
-		BinarySerialization() {}
+		BinarySerialization() = default;
 
-		template<TrivialType T>
-		friend auto SerializeToBinary(const T& object) -> BinarySerialization<T>
+		friend auto SerializeToBinary(const T& object) -> BinarySerialization<T>;
 	};
 
 	template<TrivialType T>
 	auto SerializeToBinary(const T& object) -> BinarySerialization<T>
 	{
-		auto binarySerialization = BinarySerialization<T>{};
+		auto serializedObject = BinarySerialization<T>{};
 
-		auto* copyDestination = reinterpret_cast<void*>(&binarySerialization);
-		auto* copySource      = reinterpret_cast<void*>(&object);
+		std::memcpy(binarySerialization.mContent.data(), &object, sizeof(T));
 
-		auto copySizeBytes = sizeof(T);
-
-		std::memcpy(copyDestination, copySource, copySizeBytes);
-
-		return binarySerialization;
+		return serializedObject;
 	}
 }

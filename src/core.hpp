@@ -27,7 +27,7 @@ namespace srl
 	{
 		auto serializedObject = BinarySerialization<T>{};
 
-		std::memcpy(binarySerialization.mContent.data(), &object, sizeof(T));
+		std::memcpy(serializedObject.mContent.data(), &object, sizeof(T));
 
 		return serializedObject;
 	}

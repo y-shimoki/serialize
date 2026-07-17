@@ -8,7 +8,9 @@
 namespace srl
 {
 	template<typename T>
-	concept TrivialType = std::is_trivially_copyable_v<T> && std::is_trivially_constructible_v<T> && !std::is_pointer_v<T>;
+	concept TrivialType = std::is_trivially_copyable_v<T> &&
+						  std::is_trivially_constructible_v<T> &&
+						  !std::is_pointer_v<T>;
 
 	template<TrivialType T>
 	class BinarySerialization
@@ -20,6 +22,7 @@ namespace srl
 		BinarySerialization() = default;
 
 		friend auto SerializeToBinary(const T& object) -> BinarySerialization<T>;
+		friend auto DeserializeFromBinary(const BinarySerialization<T>& serializedObject) -> T;
 	};
 
 	template<TrivialType T>
@@ -30,5 +33,15 @@ namespace srl
 		std::memcpy(serializedObject.mContent.data(), &object, sizeof(T));
 
 		return serializedObject;
+	}
+
+	template<TrivialType T>
+	auto DeserializeFromBinary(const BinarySerialization<T>& serializedObject) -> T
+	{
+		auto deserializedObject = T();
+
+		std::memcpy(&deserializedObject, serializedObject.mContent.data(), sizeof(T));
+
+		return deserializedObject;
 	}
 }

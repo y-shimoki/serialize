@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <tuple>
 #include <cstddef>
 #include <cstdlib>
 #include <type_traits>
@@ -44,7 +45,7 @@ namespace srl
 
 		return deserializedObject;
 	}
-}
+} // namespace srl
 
 // Biblioteca Serialize
 namespace srl
@@ -64,8 +65,35 @@ namespace srl
 	//template<auto T>
 	//using PointedType = typename MemberPointerTraits<decltype(T)>::MemberType;
 
+	// [TODO]: Define an access struct that simplifies consumer-side friend declarations
+	// 
+	// > Currently necessary code:
+	// friend auto srl::ReflectFields(auto MyClass::*...);
+	// 
+	// > Goal:
+	// friend class srl::Access;
+	//
+	template<typename T>
+	struct Access
+	{
+
+	};
+
 	template <typename T>
-	constexpr auto kSerializableFields = std::tuple{};
+	constexpr auto kSerializableFields = [] {
+		static_assert(
+			std::always_false_v<T>,
+R"del(The specified type wasn't specialized.
+You can specialize your type through the following code:
+namespace srl
+{
+    template<>
+    constexpr auto kSerializableFields<YourClass> =
+		ReflectFields(&YourClass::field1, &YourClass::field2, ...);
+})del"
+		);
+		return std::tuple{};
+	};
 
 	template<typename T, typename... Ms>
 	consteval auto ReflectFields(Ms T::*... memberPointers)
@@ -98,4 +126,4 @@ namespace srl
 			memberPointers
 		);
 	}
-}
+} // namespace srl

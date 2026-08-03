@@ -93,7 +93,7 @@ namespace srl
 })del"
 		);
 		return std::tuple{};
-	};
+	}();
 
 	template<typename T, typename... Ms>
 	consteval auto ReflectFields(Ms T::*... memberPointers)

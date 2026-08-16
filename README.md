@@ -41,3 +41,18 @@ Therefore, it's of essence for the library to have an extensible formatting syst
 Even if serialization works correctly, changes to the fields of a class (like reordering, renaming or data type changes) might break pre-existing serializations.
 
 This makes necessary the addition of a versioning system that allows graceful handling of chronologic mismatches.
+
+# Design choices
+
+There are 2 ways to solve the major problems with serialization in C++:
+
+- External reflection system (e.g. Google's FlatBuffers and Protobuf)
+- Internal reflection system (e.g. Cereal, Boost.Serialization)
+
+Like most design decisions in software engineering, the choice of which path to go boils down to trade-offs:
+
+- An external reflection system (like an external compiler that generates the class code for the developer) adds build complexity, requires transitioning between C++ and an external file format, and can be awkward or impossible to implement 3rd-party data types. Yet it's more scalable and requires no boilerplate.
+- An internal reflection system (like one done through template metaprogramming) adds boilerplate code, can strecth compilation times and are less flexible. However they operate entirely inside C++, and can serialize 3rd-party types if designed correctly.
+	- It's noteworthy that C++26's reflection system will change the dynamics between those trade-offs, allowing for cleaner, faster serialization systems.
+
+Additionally, if you go with the internal reflection system, there's the necessity to pick between intrusive and non-intrusive implemenations. A good serialization library will allow the consumer to pick between both, but non-intrusive implementations often beat intrusive ones in long-term flexibility.

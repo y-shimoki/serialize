@@ -17,7 +17,7 @@ namespace srl
 	class BinarySerialization
 	{
 	public:
-		std::array<std::byte, sizeof(T)> mContent;
+		std::array<std::byte, sizeof(kSerializableFields<T>)> mContent;
 
 	private:
 		BinarySerialization() = default;

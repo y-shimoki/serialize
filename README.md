@@ -1,8 +1,6 @@
-# Serialize (WIP)
+# Serialize (Discontinued)
 
 Serialize is a serialization library for C++23 and, in the future, C++26.
-
-Currently, most of the code is on the develop branch.
 
 # Challenges
 

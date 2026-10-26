@@ -38,10 +38,6 @@
 *.out
 *.app
 
-# Build directories
-build/bin/*
-build/obj/*
-
 # CMake generated files
 CMakeFiles/
 CMakeCache.txt
@@ -56,6 +52,9 @@ compile_commands.json
 *.bak
 *.swp
 
+# Build directories
+/build/*
+
 # vcpkg
 vcpkg_installed/
 
@@ -68,3 +67,4 @@ Testing/
 
 # vscode
 *.vscode
+/.vs

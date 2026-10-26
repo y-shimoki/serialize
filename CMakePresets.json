@@ -1,0 +1,57 @@
+{
+  "version": 9,
+  "configurePresets": [
+    {
+      "name": "base-settings",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/intermediary/${presetName}",
+      "cacheVariables": {
+        "CMAKE_RUNTIME_OUTPUT_DIRECTORY": "${sourceDir}/build/out",
+        "CMAKE_LIBRARY_OUTPUT_DIRECTORY": "${sourceDir}/build/out",
+        "CMAKE_ARCHIVE_OUTPUT_DIRECTORY": "${sourceDir}/build/out"
+      }
+    },
+    {
+      "name": "vs2026",
+      "inherits": "base-settings",
+      "displayName": "Visual Studio 18 2026",
+      "generator": "Visual Studio 18 2026",
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      }
+    },
+    {
+      "name": "ninja",
+      "inherits": "base-settings",
+      "displayName": "Ninja",
+      "generator": "Ninja Multi-Config"
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "vs2026-debug",
+      "displayName": "VS2026 Debug",
+      "configurePreset": "vs2026",
+      "configuration": "Debug"
+    },
+    {
+      "name": "vs2026-release",
+      "displayName": "VS2026 Release",
+      "configurePreset": "vs2026",
+      "configuration": "Release"
+    },
+    {
+      "name": "ninja-debug",
+      "displayName": "Ninja Debug",
+      "configurePreset": "ninja",
+      "configuration": "Debug"
+    },
+    {
+      "name": "ninja-release",
+      "displayName": "Ninja Release",
+      "configurePreset": "ninja",
+      "configuration": "Release"
+    }
+  ]
+}
